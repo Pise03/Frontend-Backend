@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dipendenti</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container p-3">
+    <h1 class="d-inline">Dipendenti</h1>
+    <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#modal">Aggiungi</button>
+
+    <div class="modal fade" id="modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Aggiungi dipendente</h5>
+          </div>
+          <div class="modal-body">
+            <input type="text" class="form-control mb-3" name="nome" id="nome" placeholder="nome">
+            <input type="text" class="form-control" name="cognome" id="cognome" placeholder="cognome">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annulla</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="aggiungi">Aggiungi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal-modify" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Modifica dipendente</h5>
+          </div>
+          <div class="modal-body">
+            <input type="text" class="form-control mb-3" name="nome" id="nome-m" placeholder="nome">
+            <input type="text" class="form-control" name="cognome" id="cognome-m" placeholder="cognome">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annulla</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="modifica">Modifica</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <table class="table table-hover mt-5 text-center align-middle">
+      <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Cognome</th>
+          <th scope="col">Azioni</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <!-- Bottoni avanti e indietro -->
+    <div class="btn-group" role="group" aria-label="Basic outlined example">
+      <button type="button" class="btn btn-outline-primary" id="first">First</button>
+      <button type="button" class="btn btn-outline-primary" id="Prev">Prev</button>
+      
+      <div class="btn-group" role="group" aria-label="Third group" id="page">
+        
+      </div>
+
+      <button type="button" class="btn btn-outline-primary" id="succ">Next</button>
+      <button type="button" class="btn btn-outline-primary" id="last">Last</button>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
