@@ -62,6 +62,13 @@ function displayTable(data) {
 
     $(".modifica").click(function () {
         id = $(this).parent().data("id");
+        //per far vedere i nomi nel modal
+        for (var i = 0; i < data.length; i++) {
+            if (id == data[i].id) {
+                $("#nome-m").val(data[i].firstName);
+                $("#cognome-m").val(data[i].lastName);
+            }
+        }
     });
 
 
@@ -111,7 +118,7 @@ $("#aggiungi").click(function () {
 });
 
 $("#modifica").click(function () {
-    console.log(this);
+
 
     var nome = $("#nome-m").val();
     var cognome = $("#cognome-m").val();
@@ -119,7 +126,7 @@ $("#modifica").click(function () {
     $.ajax({
         type: "PUT",
         url: link + "?page="+response['1']['number']+ "&size=20" +'&id=' + id + '&nome=' + nome + '&cognome=' + cognome,
-        
+
         data: JSON.stringify({
             firstName: nome,
             lastName: cognome
@@ -127,7 +134,9 @@ $("#modifica").click(function () {
 
         dataType: "json",
         contentType: "application/json",
+
         success: function () {
+            console.log("succes");
             chiamata(link + "?page=" + response['1']['number']+ "&size=20");
         }
     });
