@@ -1,5 +1,5 @@
 var response = null;
-var link = 'http://localhost:8080/index.php';
+var link = 'http://localhost:8080/rest.php';
 var page = '';
 var id;
 var nextId = 500021;
@@ -10,12 +10,15 @@ var btnElimina = "<button class='btn btn-danger elimina'>Elimina</button>";
 function chiamata(url) {
     $.ajax({
         url: url,
+        method: 'GET',
         dataType: 'json', //restituisce un oggetto JSON
         success: function (responseData) {
             console.log(responseData);
             response = responseData;
-            page = response["page"]["number"];
+            page = response['1']["number"];
+
             console.log(page);
+
             if (page == 0) {
                 $('#Prev').hide();
                 $('#first').hide();
@@ -23,14 +26,14 @@ function chiamata(url) {
                 $('#Prev').show();
                 $('#first').show();
             }
-            if (url == response["_links"]["last"]["href"]) {
+            if (url == response[0]["_links"]["ult"]["href"]) {
                 $('#last').hide();
                 $('#succ').hide();
             } else {
                 $('#last').show();
                 $('#succ').show();
             }
-            $("#page").html("<button type='button' class='btn btn-info'>" + response["page"]["number"] + "</button>");
+            $("#page").html("<button type='button' class='btn btn-info'>" + response[1]["number"] + "</button>");
             displayTable(response["_embedded"]["employees"]);
         }
     });
@@ -39,7 +42,7 @@ function chiamata(url) {
 //una volta che la pagina viene caricata, vengono inseriti gli elementi nella tabella
 $(document).ready(
     // displayTable(),
-    chiamata(link),
+    chiamata(link + "?page=0&size=20"),
 );
 
 function displayTable(data) {
@@ -67,10 +70,10 @@ function displayTable(data) {
         id = $(this).parent().data("id");
         $.ajax({
             type: "DELETE",
-            url: link + "/" + id,
+            url: link + "?page=" + response['1']['number'] + "&size=20" + '&id=' + id,
             success: function () {
                 console.log(response);
-                chiamata(link + "?page=" + page);
+                chiamata(link + "?page=" + page + "&size=20");
             }
         });
     });
@@ -86,7 +89,7 @@ $("#aggiungi").click(function () {
 
     $.ajax({
         type: "POST",
-        url: link,
+        url: link + "?page=" + response['1']['number'] + "&size=20" + '&nome=' + nome + '&cognome=' + cognome,
 
         data: JSON.stringify({
             birthDate: "",
@@ -101,7 +104,7 @@ $("#aggiungi").click(function () {
 
         success: function () {
             nextId++;
-            var last = response["_links"]["last"]["href"];
+            var last = response[0]["_links"]["ult"]["href"];
             chiamata(last);
         }
     });
@@ -114,16 +117,18 @@ $("#modifica").click(function () {
     var cognome = $("#cognome-m").val();
 
     $.ajax({
-        type: "PATCH",
-        url: "http://localhost:8080/employees/" + id,
+        type: "PUT",
+        url: link + "?page="+response['1']['number']+ "&size=20" +'&id=' + id + '&nome=' + nome + '&cognome=' + cognome,
+        
         data: JSON.stringify({
             firstName: nome,
             lastName: cognome
         }),
+
         dataType: "json",
         contentType: "application/json",
         success: function () {
-            chiamata(link);
+            chiamata(link + "?page=" + response['1']['number']+ "&size=20");
         }
     });
 
@@ -131,28 +136,28 @@ $("#modifica").click(function () {
 
 //bottone per pagina avanti
 $('#succ').click(function () {
-    var next = response["_links"]["next"]["href"];
+    var next = response[0]["_links"]["succ"]["href"];
     console.log(next);
     chiamata(next);
 });
 
 //bottone per pagina indietro
 $('#Prev').click(function () {
-    var pre = response["_links"]["prev"]["href"];
+    var pre = response[0]["_links"]["prece"]["href"];
     console.log(pre);
     chiamata(pre);
 });
 
 //bottone per ultima pagina
 $('#last').click(function () {
-    var last = response["_links"]["last"]["href"];
+    var last = response[0]["_links"]["ult"]["href"];
     console.log(last);
     chiamata(last);
 });
 
 //bottone per prima pagina
 $('#first').click(function () {
-    var first = response["_links"]["first"]["href"];
+    var first = response[0]["_links"]["prima"]["href"];
     console.log(first);
     chiamata(first);
 });
